@@ -14,34 +14,26 @@ class DpLogController extends ControllerBase
     public function sendEmailAction($toAddress, $subject, $body)
 	{
 		$transport = new Swift_SmtpTransport('smtp.gmail.com',587,'tls');
-		$transport->setUsername('Your email');
-		$transport->setPassword('Your password');
+		$transport->setUsername('lifelogclub@gmail.com');
+		$transport->setPassword('Snk7c7s12!');
 		$transport->setStreamOptions(array('ssl' => array('allow_self_signed' => true, 'verify_peer' => false)));
 		$mailer = new Swift_Mailer($transport);
 		$message = new Swift_Message($subject);
-		$message->setFrom(['Your email' => 'Admin @ lifelog']);
+		$message->setFrom(['lifelogclub@gmail.com' => 'Admin @ lifelog']);
 		$message->setTo([$toAddress, $toAddress => $toAddress]);
 		$message->setBody($body);
 		$result = $mailer->send($message);
 		if ($result>0) {
 			$this->flash->notice("Email sent successfully ");
-			$this->dispatcher->forward([
-                "controller" => "errorlog",
-                "action" => "index"
-            ]);
+			
+            
 		}
 		else {
 			$this->flash->notice("Unable send Email to this email address ");
-			$this->dispatcher->forward([
-                "controller" => "errorlog",
-                "action" => "index"
-            ]);
+			
+            
 		}
-		$this->dispatcher->forward([
-                "controller" => "errorlog",
-                "action" => "index"
-            ]);
-	}
+    }
 
     /**
      * Sends Email Once a day if New Log is Generated
@@ -65,7 +57,7 @@ class DpLogController extends ControllerBase
             $errors .= $error->id."\t".$error->applicationName."\t".$error->source."\t".$error->instanceId."\t".$error->Message."\t".$error->stackTrace."\t".$error->createdOn ."\n\n";
             }
         } 
-            $msg = ["Senders Email","Error Logs Generated On ". Date("d-m-Y"),$errors];
+            $msg = ["viciousrascl@gmail.com","Error Logs Generated On ". Date("d-m-Y"),$errors];
             $this->dispatcher->forward(["conrtoller" => "dp_log","action" => "sendEmail", "params" => $msg]);
             
         }
