@@ -14,12 +14,12 @@ class DpLogController extends ControllerBase
     public function sendEmailAction($toAddress, $subject, $body)
 	{
 		$transport = new Swift_SmtpTransport('smtp.gmail.com',587,'tls');
-		$transport->setUsername('lifelogclub@gmail.com');
-		$transport->setPassword('Snk7c7s12!');
+		$transport->setUsername('Your email');
+		$transport->setPassword('Your password');
 		$transport->setStreamOptions(array('ssl' => array('allow_self_signed' => true, 'verify_peer' => false)));
 		$mailer = new Swift_Mailer($transport);
 		$message = new Swift_Message($subject);
-		$message->setFrom(['lifelogclub@gmail.com' => 'Admin @ lifelog']);
+		$message->setFrom(['Your email' => 'Admin @ lifelog']);
 		$message->setTo([$toAddress, $toAddress => $toAddress]);
 		$message->setBody($body);
 		$result = $mailer->send($message);
@@ -65,7 +65,7 @@ class DpLogController extends ControllerBase
             $errors .= $error->id."\t".$error->applicationName."\t".$error->source."\t".$error->instanceId."\t".$error->Message."\t".$error->stackTrace."\t".$error->createdOn ."\n\n";
             }
         } 
-            $msg = ["viciousrascl@gmail.com","Error Logs Generated On ". Date("d-m-Y"),$errors];
+            $msg = ["Senders Email","Error Logs Generated On ". Date("d-m-Y"),$errors];
             $this->dispatcher->forward(["conrtoller" => "dp_log","action" => "sendEmail", "params" => $msg]);
             
         }
