@@ -13,7 +13,9 @@ $loader->registerNamespaces(
 $loader->registerDirs(
     [
         $config->application->controllersDir,
-        $config->application->modelsDir
+        $config->application->modelsDir,
+        $config->application->tasksDir,
+        $config->application->libraryDir
     ]
 )->register();
 require_once __DIR__ . "/../../vendor/autoload.php";

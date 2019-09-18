@@ -1,22 +1,8 @@
 <?php
 
-use errorlog\DpLog;
-
-class DpLogController extends ControllerBase
+class cliMain
 {
-    /**
-     * Index action
-     */
-    public function indexAction()
-    {
-    
-    }
-    
-
-    /**
-     * Sends Email Once a day if New Log is Generated
-     */
-    public function CheckLogAction()
+  public function CheckLog()
     {
         
         $date = Date('d-m-Y',strtotime('-1 days')); 
@@ -35,12 +21,12 @@ class DpLogController extends ControllerBase
             $errors .= $error->id."\t".$error->applicationName."\t".$error->source."\t".$error->instanceId."\t".$error->Message."\t".$error->stackTrace."\t".$error->createdOn ."\n\n";
             }
         } 
-            $msg = ["viciousrascl@gmail.com","Error Logs Generated On ". $date,$errors];
-            $this->dispatcher->forward(["conrtoller" => "dp_log","action" => "sendEmail", "params" => $msg]);
+        
+        $this->sendEmail("viciousrascl@gmail.com",("Error Logs Generated On ". $date),$errors);
             
     }
 
-    public function sendEmailAction($toAddress, $subject, $body)
+    public function sendEmail($toAddress, $subject, $body)
     {
         $transport = new Swift_SmtpTransport('smtp.gmail.com',587,'tls');
         $transport->setUsername('lifelogclub@gmail.com');
@@ -53,14 +39,10 @@ class DpLogController extends ControllerBase
         $message->setBody($body);
         $result = $mailer->send($message);
         if ($result>0) {
-            $this->flash->notice("Email sent successfully ");
+            echo "Email sent successfully ";
         }
         else {
-            $this->flash->notice("Unable send Email to this email address ");
+            echo"Unable to complete request, Please try again... ";
         }
     }
-
-
 }
-
-

@@ -1,7 +1,5 @@
 <?php
 
-namespace errorlog;
-
 class DpLog extends \Phalcon\Mvc\Model
 {
 

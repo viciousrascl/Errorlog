@@ -15,6 +15,7 @@ $di->setShared('config', function () {
     return include APP_PATH . "/config/config.php";
 });
 
+
 /**
  * The URL component is used to generate all kind of urls in the application
  */
@@ -101,6 +102,9 @@ $di->set('flash', function () {
     ]);
 });
 
+$di->setShared('response',function(){
+return new \Phalcon\Http\Response();
+});
 /**
  * Start the session the first time some component request the session service
  */
