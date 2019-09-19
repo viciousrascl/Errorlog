@@ -61,10 +61,6 @@ class DpLog extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getSource()
-    {
-        return 'dp_log';
-    }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -107,7 +103,7 @@ class DpLog extends \Phalcon\Mvc\Model
                     if (!is_null($value)) {
                         if ($value != '') {                         
                             if ($dataTypes[$field] == 2) {                              
-                                $condition = $fieldName . " LIKE :" . $fieldName . ":";                             
+                                $condition = $fieldName . " Greater than or equal :" . $fieldName . ":";                             
                                 $bind[$fieldName] = '%' . $value . '%';
                             } else {                                
                                 $condition = $fieldName . ' = :' . $fieldName . ':';
