@@ -1,12 +1,12 @@
 <?php
-
+use Phalcon\Mvc\Model\Criteria;
 class cliMain
 {
   public function CheckLog()
     {
         
         $date = Date('d-m-Y',strtotime('-1 days')); 
-        $errorlog = DpLog::find("'createdOn'=".$date );   
+        $errorlog = $this->search($date);   
         if (count($errorlog) == 0) 
         { 
             
@@ -18,7 +18,7 @@ class cliMain
             foreach($errorlog as $error)
             {
                 
-            $errors .= $error->id."\t".$error->applicationName."\t".$error->source."\t".$error->instanceId."\t".$error->Message."\t".$error->stackTrace."\t".$error->createdOn ."\n\n";
+            $errors .= $error->id."\t".$error->ApplicationName."\t".$error->Source."\t".$error->InstanceId."\t".$error->Message."\t".$error->StackTrace."\t".$error->CreatedOn ."\n\n";
             }
         } 
         
@@ -44,5 +44,26 @@ class cliMain
         else {
             echo"Unable to complete request, Please try again... ";
         }
+    }
+    public function search($date)
+    {
+            $argDate = array([ 
+                "id" => "",
+                "ApplicationName"=> "",
+                "Source" => "",
+                "InstanceId" => "",
+                "Message" =>  "",
+                "StackTrace" => "", 
+                "CreatedOn" =>  $date ]);
+            $DpLog= new DpLogController;
+            $query = Criteria::fromInput($DpLog->di, 'DpLog', $argDate);
+            $parameters = $query->getParams();
+
+        if (!is_array($parameters)) {
+            $parameters = [];
+        }
+        $dp_log = DpLog::find($parameters);
+            return $dp_log;
+
     }
 }

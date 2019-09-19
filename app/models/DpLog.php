@@ -88,4 +88,42 @@ class DpLog extends \Phalcon\Mvc\Model
         return parent::findFirst($parameters);
     }
 
+    public static function fromInput($dependencyInjector, $modelName, $data)
+    {
+        $conditions = array();
+        if (count($data)) {
+            $metaData = $dependencyInjector->getShared('modelsMetadata');
+            $model = new $modelName();
+            $dataTypes = $metaData->getDataTypes($model);
+            $columnMap = $metaData->getReverseColumnMap($model);
+            $bind = array();
+            foreach ($data as $fieldName => $value) {
+                if (isset($columnMap[$fieldName])) {
+                    $field = $columnMap[$fieldName];
+                } else {
+                    continue;
+                }
+                if (isset($dataTypes[$field])) {
+                    if (!is_null($value)) {
+                        if ($value != '') {                         
+                            if ($dataTypes[$field] == 2) {                              
+                                $condition = $fieldName . " LIKE :" . $fieldName . ":";                             
+                                $bind[$fieldName] = '%' . $value . '%';
+                            } else {                                
+                                $condition = $fieldName . ' = :' . $fieldName . ':';
+                                $bind[$fieldName] = $value;
+                            }
+                            $conditions[] = $condition;
+                        }
+                    }
+                }
+            }
+        }
+        $criteria = new Criteria();
+        if (count($conditions)) {           
+            $criteria->where(join(' AND ', $conditions));
+            $criteria->bind($bind);
+        }
+        return $criteria;
+    }
 }

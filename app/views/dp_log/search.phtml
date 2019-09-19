@@ -1,0 +1,75 @@
+<?php
+/**
+ * @var \Phalcon\Mvc\View\Engine\Php $this
+ */
+?>
+
+<?php use Phalcon\Tag; ?>
+
+<div class="row">
+    <nav>
+        <ul class="pager">
+            <li class="previous"><?php echo $this->tag->linkTo(["dp_log/index", "Go Back"]); ?></li>
+            <li class="next"><?php echo $this->tag->linkTo(["dp_log/new", "Create "]); ?></li>
+        </ul>
+    </nav>
+</div>
+
+<div class="page-header">
+    <h1>Search result</h1>
+</div>
+
+<?php echo $this->getContent(); ?>
+
+<div class="row">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+            <th>ApplicationName</th>
+            <th>Source</th>
+            <th>InstanceId</th>
+            <th>Message</th>
+            <th>StackTrace</th>
+            <th>CreatedOn</th>
+
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($page->items as $dp_log): ?>
+            <tr>
+                <td><?php echo $dp_log->id ?></td>
+            <td><?php echo $dp_log->ApplicationName ?></td>
+            <td><?php echo $dp_log->Source ?></td>
+            <td><?php echo $dp_log->InstanceId ?></td>
+            <td><?php echo $dp_log->Message ?></td>
+            <td><?php echo $dp_log->StackTrace ?></td>
+            <td><?php echo $dp_log->CreatedOn ?></td>
+
+                <td><?php echo $this->tag->linkTo(["dp_log/edit/" . $dp_log->id, "Edit"]); ?></td>
+                <td><?php echo $this->tag->linkTo(["dp_log/delete/" . $dp_log->id, "Delete"]); ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <div class="col-sm-1">
+        <p class="pagination" style="line-height: 1.42857;padding: 6px 12px;">
+            <?php echo $page->current, "/", $page->total_pages ?>
+        </p>
+    </div>
+    <div class="col-sm-11">
+        <nav>
+            <ul class="pagination">
+                <li><?php echo $this->tag->linkTo(["dp_log/search", "First", 'class' => 'page-link']) ?></li>
+                <li><?php echo $this->tag->linkTo(["dp_log/search?page=" . $page->before, "Previous", 'class' => 'page-link']) ?></li>
+                <li><?php echo $this->tag->linkTo(["dp_log/search?page=" . $page->next, "Next", 'class' => 'page-link']) ?></li>
+                <li><?php echo $this->tag->linkTo(["dp_log/search?page=" . $page->last, "Last", 'class' => 'page-link']) ?></li>
+            </ul>
+        </nav>
+    </div>
+</div>
